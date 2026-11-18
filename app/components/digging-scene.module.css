@@ -1,0 +1,104 @@
+.scene {
+  width: min(100%, 640px);
+  height: auto;
+}
+
+/* Parte de cima do Clawd (corpo, chapéu e pá) agacha um pouco ao cavar. */
+.worker {
+  animation: lean 1.6s ease-in-out infinite;
+}
+
+/* A pá gira em torno do ombro do Clawd, em (60, 72) no viewBox. */
+.shovel {
+  transform-origin: 60px 72px;
+  transform: rotate(20deg);
+  animation: dig 1.6s ease-in-out infinite;
+}
+
+/* Torrões de terra: invisíveis por padrão, voam da pá até a pilha. */
+.dirt {
+  opacity: 0;
+  animation: fling 1.6s ease-out infinite;
+}
+
+.dirtGroup > rect:nth-child(1) {
+  --dx: 52px;
+  --dy: 20px;
+  animation-delay: 0s;
+}
+
+.dirtGroup > rect:nth-child(2) {
+  --dx: 56px;
+  --dy: 22px;
+  animation-delay: 0.05s;
+}
+
+.dirtGroup > rect:nth-child(3) {
+  --dx: 60px;
+  --dy: 18px;
+  animation-delay: 0.1s;
+}
+
+.dirtGroup > rect:nth-child(4) {
+  --dx: 64px;
+  --dy: 24px;
+  animation-delay: 0.15s;
+}
+
+.dirtGroup > rect:nth-child(5) {
+  --dx: 54px;
+  --dy: 16px;
+  animation-delay: 0.2s;
+}
+
+@keyframes lean {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  45%,
+  60% {
+    transform: translateY(2px);
+  }
+}
+
+@keyframes dig {
+  0%,
+  100% {
+    transform: rotate(-35deg);
+  }
+  45%,
+  60% {
+    transform: rotate(42deg);
+  }
+}
+
+@keyframes fling {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  17% {
+    transform: translate(
+      calc(var(--dx) * 0.5),
+      calc(var(--dy) * 0.5 - 18px)
+    );
+  }
+  35% {
+    opacity: 1;
+    transform: translate(var(--dx), var(--dy));
+  }
+  36%,
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .worker,
+  .shovel,
+  .dirt {
+    animation: none;
+  }
+}

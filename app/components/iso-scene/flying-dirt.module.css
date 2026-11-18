@@ -1,0 +1,93 @@
+/* Five clods thrown from the raised shovel to the top step of the pile. They are
+   hidden (scale 0) outside of their flight. The 2.4s period matches the dig
+   cycle. The path is a parabola sampled in five points and played back with
+   linear timing: easing would only change the speed along each straight piece. */
+.dirt {
+  --lift: 3.5;
+  scale: 0;
+  animation: throw 2.4s linear infinite;
+}
+
+.group > .dirt:nth-child(1) {
+  --dx: 5.9;
+  --dy: -0.5;
+  --dz: -4.5;
+  animation-delay: 0s;
+}
+
+.group > .dirt:nth-child(2) {
+  --dx: 6.2;
+  --dy: -0.3;
+  --dz: -4.4;
+  animation-delay: 0.05s;
+}
+
+.group > .dirt:nth-child(3) {
+  --dx: 6.5;
+  --dy: 0;
+  --dz: -4.5;
+  animation-delay: 0.1s;
+}
+
+.group > .dirt:nth-child(4) {
+  --dx: 6;
+  --dy: 0.1;
+  --dz: -4.4;
+  animation-delay: 0.15s;
+}
+
+.group > .dirt:nth-child(5) {
+  --dx: 6.3;
+  --dy: -0.35;
+  --dz: -4.5;
+  animation-delay: 0.2s;
+}
+
+/* Position at flight fraction t: (dx*t, dy*t, dz*t + 4*lift*t*(1-t)). The
+   hide at 35% is a discrete step: `scale` also scales the offset in `transform`,
+   so shrinking smoothly would slide the clod back toward the shovel. */
+@keyframes throw {
+  0% {
+    scale: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  8.75% {
+    transform: translate3d(
+      calc(var(--dx) * var(--u) * 0.25),
+      calc(var(--dy) * var(--u) * 0.25),
+      calc((var(--dz) * 0.25 + var(--lift) * 0.75) * var(--u))
+    );
+  }
+  17.5% {
+    transform: translate3d(
+      calc(var(--dx) * var(--u) * 0.5),
+      calc(var(--dy) * var(--u) * 0.5),
+      calc((var(--dz) * 0.5 + var(--lift)) * var(--u))
+    );
+  }
+  26.25% {
+    transform: translate3d(
+      calc(var(--dx) * var(--u) * 0.75),
+      calc(var(--dy) * var(--u) * 0.75),
+      calc((var(--dz) * 0.75 + var(--lift) * 0.75) * var(--u))
+    );
+  }
+  35% {
+    scale: 1;
+    transform: translate3d(
+      calc(var(--dx) * var(--u)),
+      calc(var(--dy) * var(--u)),
+      calc(var(--dz) * var(--u))
+    );
+    animation-timing-function: step-end;
+  }
+  36%,
+  100% {
+    scale: 0;
+    transform: translate3d(
+      calc(var(--dx) * var(--u)),
+      calc(var(--dy) * var(--u)),
+      calc(var(--dz) * var(--u))
+    );
+  }
+}
