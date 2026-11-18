@@ -1,0 +1,59 @@
+/* A positioned node. Its position uses the individual `translate` property so
+   that animations can freely use `transform` (pivoting around the node). */
+.node {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  translate: calc(var(--x) * var(--u)) calc(var(--y) * var(--u))
+    calc(var(--z) * var(--u));
+}
+
+.top,
+.left,
+.right,
+.bottom {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  transform-origin: 0 0;
+}
+
+/* Plane z = h. */
+.top {
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--d) * var(--u));
+  transform: translateZ(calc(var(--h) * var(--u)));
+}
+
+/* Plane y = d, the face that looks toward +y. */
+.left {
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h) * var(--u));
+  transform: translate3d(0, calc(var(--d) * var(--u)), calc(var(--h) * var(--u)))
+    rotateX(-90deg);
+}
+
+/* Plane x = w, the face that looks toward +x. Its u axis runs from y = d down
+   to y = 0, so the front of the div faces +x and its content is not mirrored. */
+.right {
+  width: calc(var(--d) * var(--u));
+  height: calc(var(--h) * var(--u));
+  transform: translate3d(
+      calc(var(--w) * var(--u)),
+      calc(var(--d) * var(--u)),
+      calc(var(--h) * var(--u))
+    )
+    rotateZ(-90deg) rotateX(-90deg);
+}
+
+/* Plane z = 0, the face that looks down. Only parts that tilt far enough for it
+   to face the camera need it (more than 45 degrees about the y axis). */
+.bottom {
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--d) * var(--u));
+  transform: translate3d(0, calc(var(--d) * var(--u)), 0) rotateX(180deg);
+}

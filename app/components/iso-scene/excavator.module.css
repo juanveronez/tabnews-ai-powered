@@ -1,0 +1,46 @@
+/* The arm of an excavator that faces -x: each segment points along local -x,
+   and a positive `rotateY` raises it. The period is 6s (half the base). */
+.boom {
+  transform: rotateY(38deg);
+  animation: boom 6s ease-in-out infinite;
+}
+
+.stick {
+  transform: rotateY(-75deg);
+  animation: stick 6s ease-in-out infinite;
+}
+
+.bucket {
+  transform: rotateY(-45deg);
+  animation: bucket 6s ease-in-out infinite;
+}
+
+@keyframes boom {
+  0%,
+  100% {
+    transform: rotateY(46deg);
+  }
+  50% {
+    transform: rotateY(26deg);
+  }
+}
+
+@keyframes stick {
+  0%,
+  100% {
+    transform: rotateY(-62deg);
+  }
+  50% {
+    transform: rotateY(-95deg);
+  }
+}
+
+@keyframes bucket {
+  0%,
+  100% {
+    transform: rotateY(-30deg);
+  }
+  50% {
+    transform: rotateY(-65deg);
+  }
+}
