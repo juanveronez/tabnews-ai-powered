@@ -1,7 +1,10 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import Confetti from "react-confetti";
+
+// Decorative and only shown after hydration, so keep it out of the initial bundle.
+const Confetti = dynamic(() => import("react-confetti"), { ssr: false });
 
 type Size = { width: number; height: number };
 
@@ -10,6 +13,10 @@ export default function ConfettiOnLoad() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
+    if (done) {
+      return;
+    }
+
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setDone(true);
       return;
@@ -21,7 +28,7 @@ export default function ConfettiOnLoad() {
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
-  }, []);
+  }, [done]);
 
   if (!size || done) {
     return null;
